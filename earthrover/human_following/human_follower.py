@@ -1,9 +1,4 @@
 """
-Project: AI Robot - Human Following
-Author: Jitesh Saini
-Github: https://github.com/jiteshsaini
-website: https://helloworld.co.in
-
 - The robot uses PiCamera to capture a frame. 
 - Presence of human in the frame is detected using Machine Learning moldel & TensorFlow Lite interpreter.
 - Using OpenCV, the frame is overlayed with information such as bounding boxes, center coordinates of the person, deviation of the person from center of the frame etc.
@@ -31,8 +26,8 @@ sys.path.insert(0, '/var/www/html/earthrover')
 import util as ut
 ut.init_gpio()
 
-cap = cv2.VideoCapture(0)
-threshold=0.2
+cap = cv2.VideoCapture(1) #use 1 for USB camera and 0 for RP cam
+threshold=0.3 #changed from 0.2
 top_k=5 #first five objects with prediction probability above threshhold (0.2) to be considered
 #edgetpu=0
 
@@ -76,7 +71,7 @@ GPIO.setup(21, GPIO.OUT)# set GPIO 21 as output pin
 pin20 = GPIO.PWM(20, 100)    # create object pin20 for PWM on port 20 at 100 Hertz  
 pin21 = GPIO.PWM(21, 100)    # create object pin21 for PWM on port 21 at 100 Hertz  
 
-val=100
+val=50  #changed from 100 for bidirectional control
 pin20.start(val)              # start pin20 on 0 percent duty cycle (off)  
 pin21.start(val)              # start pin21 on 0 percent duty cycle (off)  
     
@@ -212,7 +207,7 @@ def main():
         
         cv2_im = frame
         cv2_im = cv2.flip(cv2_im, 0)
-        cv2_im = cv2.flip(cv2_im, 1)
+        cv2_im = cv2.flip(cv2_im, 1)  #use 0 t0 flip USB camera vertically
 
         cv2_im_rgb = cv2.cvtColor(cv2_im, cv2.COLOR_BGR2RGB)
         pil_im = Image.fromarray(cv2_im_rgb)
